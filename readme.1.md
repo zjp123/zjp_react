@@ -1,0 +1,36 @@
+### 步骤
+ - vscode 插件 tag Beautify Debugger for Chrome    javaScript(ES6) code snippets  Path Intellisense  React/Redux/react-router Snippets
+ - git init npm init 创建github库
+ - npm i -D webpack react react-dom
+ - create .gitignore
+ - create .babelrc
+ - npm i -D babel-plugin-transform-runtime
+ - npm i -D babel-runtime
+ - npm i -D babel-core babel-loader 
+ - npm i -D babel-preset-env
+ - npm i -D postcss-loader css-loader style-loader
+ - npm i -D less-loader less
+ - npm i -D url-loader
+ - npm i -D react-hot-loader
+ - npm install -D webpack-cli
+ - npm i -D webpack-dev-server
+ - npm install --save-dev postcss-loader autoprefixer
+ - npm i -D extract-text-webpack-plugin@next
+ - npm i -D web-webpack-plugin
+ - npm i -D html-webpack-plugin
+ - npm i -D clean-webpack-plugin
+ - npm install --save-dev babel-core babel-loader
+ - npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
+ - npm i -D mini-css-extract-plugin
+
+ ### 注意事项
+ - AutoWebPlugin 的commonsChunk 不与 splitChunks CommonsChunkPlugin 同用？
+ - 一、模板页面没有注入css或者js 使用AutoWebPlugin 它的 commonsChunk(common) postEntrys(css) 没有使用CommonsChunkPlugin
+ - 二、模板页面注入css和js 使用AutoWebPlugin 它的 commonsChunk(common) 使用 CommonsChunkPlugin
+ - 三、模板页面注入css和js 没有使用AutoWebPlugin 它的 commonsChunk(common) 使用 splitChunks
+ - publicPath:'/public/', 它决定了页面文件所引用的资源路径 就是说所有页面的资源路径的前面都会被加上 /public/xxxxxx.xx
+ - devServer 中的 publicPath: '/aa', 决定了你在浏览器中访问页面时的路径  前面必须是有aa开头 /aa/xxx/xxx
+ - 如果splitChunks中配置了runtime配置项，webpack就会打包出一个所有依赖的记录文件就是这个runtime的文件，在页面中一定要把它也引进页面中，要不然js不起作用
+ - output 的public的路径名要与devserver中的路径名一致
+ - webpack-dev-server 单纯使用它不会出现局部更新 而是全部刷新  要结合webpack-dev-middwire 和webpack-hot-middlire 还要结合nodejs
+ - MiniCssExtractPlugin是根据内容的变化来的，所有如果结合使用webpack-dev-server时，css变化并没有使页面刷新，解决办法是 ：结合splitChunks的runtime ,并且在页面中记得要引入runtimejs；或者在rules的配置中把MiniCssExtractPlugin.loader 换成style-loader，这样就不用splitChunks的runtime的配置，也不用在页面中引入runtimejs  ,缺点是不能把css从打包的模块中分离出来，css打包在js中了
