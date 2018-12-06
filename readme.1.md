@@ -22,7 +22,7 @@
  - npm install --save-dev babel-core babel-loader
  - npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
  - npm i -D mini-css-extract-plugin
-
+ - npm i -D imagemin-webpack-plugin 压缩图片
  ### 注意事项
  - AutoWebPlugin 的commonsChunk 不与 splitChunks CommonsChunkPlugin 同用？
  - 一、模板页面没有注入css或者js 使用AutoWebPlugin 它的 commonsChunk(common) postEntrys(css) 没有使用CommonsChunkPlugin
@@ -34,3 +34,11 @@
  - output 的public的路径名要与devserver中的路径名一致
  - webpack-dev-server 单纯使用它不会出现局部更新 而是全部刷新  要结合webpack-dev-middwire 和webpack-hot-middlire 还要结合nodejs
  - MiniCssExtractPlugin是根据内容的变化来的，所有如果结合使用webpack-dev-server时，css变化并没有使页面刷新，解决办法是 ：结合splitChunks的runtime ,并且在页面中记得要引入runtimejs；或者在rules的配置中把MiniCssExtractPlugin.loader 换成style-loader，这样就不用splitChunks的runtime的配置，也不用在页面中引入runtimejs  ,缺点是不能把css从打包的模块中分离出来，css打包在js中了
+ - 注意publicpath的路径配置，如果配置publicpath：‘/public/’ 那么当启动devserver时，要在浏览器启动的域名后面加上public才能访问到资源 比如：http://0.0.0.0:3000/public 不然是找不到资源的
+ - Webpack 官方提供了 一个可视化分析工具 Webpack Analyse ( h句://webpack.github.io/
+analyse/)，它是一个在线 Web 应用。
+ - npm install --save expose-loader  jquery
+ - npm install jquery --save
+ - npm install babel-plugin-import --save-dev 按需加载
+ - npm install antd --save
+ - 注意pages 页面里面必须包含index.js 或者index.jsx 不能叫home.js 或者别的名字
