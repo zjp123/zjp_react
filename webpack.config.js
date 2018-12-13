@@ -2,18 +2,19 @@ const path = require('path');
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageminPlugin = require("imagemin-webpack-plugin").default
-const { AutoWebPlugin } = require('web-webpack-plugin');
+// const { AutoWebPlugin } = require('web-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 // const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
-const autoWebPlugin = new AutoWebPlugin(path.resolve(__dirname, './src/pages'), {
-	template: path.resolve(__dirname, './src/template.html'),
-	// favicon: path.resolve(__dirname, './src/imgs/favicon.ico'),
-	postEntrys: ['./src/base/base.css'],// 所有页面都依赖这份通用的 CSS 样式文件
-	commonsChunk: {
-		name :'zjp',//提取出公共代码 Chunk 的名称
-	}		
-});
+// const autoWebPlugin = new AutoWebPlugin(path.resolve(__dirname, './src/pages'), {
+// 	template: path.resolve(__dirname, './src/template.html'),
+// 	// favicon: path.resolve(__dirname, './src/imgs/favicon.ico'),
+// 	postEntrys: ['./src/base/base.css'],// 所有页面都依赖这份通用的 CSS 样式文件
+// 	commonsChunk: {
+// 		name :'zjp',//提取出公共代码 Chunk 的名称
+// 	}		
+// });
 
 module.exports = {
 	// mode: 'development',
@@ -27,10 +28,14 @@ module.exports = {
         // 浏览器开发者工具里显示的源码模块名称
         devtoolModuleFilenameTemplate: 'zjp'
 	},
-	entry: autoWebPlugin.entry({
-		base: path.resolve(__dirname, './src/base/base.js'),
+	// entry: autoWebPlugin.entry({
+	// 	base: path.resolve(__dirname, './src/base/base.js'),
 		
-	}),
+	// }),
+	entry:{
+		index: path.resolve(__dirname, './src/index.js'),
+		base: path.resolve(__dirname, './src/base/base.js')
+	},
 	optimization: {
 		runtimeChunk: {
 			name: 'runtime',
@@ -114,11 +119,11 @@ module.exports = {
 
 			  //开发时用上面的，上线时用下面的
 
-			  //loader: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
+			//   loader: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
 			  // 排除 node_modules 目录下的文件
-			 include: path.resolve(__dirname, './src'), //antd 时要关闭
+			//  include: path.resolve(__dirname, './src'), //antd 时要关闭
               
-			  exclude: path.resolve(__dirname, './node_modules'),  //antd 时要关闭a
+			//   exclude: path.resolve(__dirname, './node_modules'),  //antd 时要关闭a
 			},
 			{
 			  // 对非文本文件采用 file-loader 加载
@@ -168,7 +173,15 @@ module.exports = {
 			'window.jQuery': 'jquery',
 			'window.$': 'jquery',
 		}),
-		autoWebPlugin,
+		new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: path.resolve(__dirname, './src/template.html'),
+			// inject: 'head',
+			favicon: path.resolve(__dirname, './src/imgs/favicon.ico'),
+			// chunks: ['index', 'base'],
+			title:"hello zjp"
+        })
+		// autoWebPlugin,
 	],
 	 devServer:{
         // proxy: { // 代理到后端服务接口
@@ -183,18 +196,29 @@ module.exports = {
 		inline:true,
         // open:true,
 		hot:true,
-		// historyApiFallback:true,
-        historyApiFallback: {
-            // 使用正则匹配命中路由
-            rewrites: [
-              // /user 开头的都返回 user.html
-				{ from: /^\/home/, to: '/home.html' },
-				{ from: /^\/login/, to: '/login.html' },
-				{ from: /^\/signup/, to: '/signup.html' },
-				// 其它的都返回 index.html
-				{ from: /./, to: '/index.html' },
-            ]
-		}
+		historyApiFallback:true,
+		proxy: {
+            '/api': {
+				target: 'http://172.16.68.149:8888',
+				pathRewrite: {
+					'^/api': '/' //这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
+						// 比如我要调用'http://0.0:300/user/add'，直接写‘/api/user/add’即可 代理后地址栏显示/
+				},
+                secure: false, // 接受 运行在 https 上的服务
+                changeOrigin: true
+            }
+        }
+        // historyApiFallback: {
+        //     // 使用正则匹配命中路由
+        //     rewrites: [
+        //       // /user 开头的都返回 user.html
+		// 		{ from: /^\/home/, to: '/home.html' },
+		// 		{ from: /^\/login/, to: '/login.html' },
+		// 		{ from: /^\/signup/, to: '/signup.html' },
+		// 		// 其它的都返回 index.html
+		// 		{ from: /./, to: '/index.html' },
+        //     ]
+		// }
 		
 	
     },
