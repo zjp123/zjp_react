@@ -93,13 +93,13 @@ module.exports = {
 			 },
 			{
 			  // 命中 SCSS 文件
-			  test: /\.(less|css)$/,
+			  test: /\.css$/,
 		
 			  use: [
 			      'style-loader',
 			      'css-loader',
 			      'postcss-loader',
-			      'less-loader',
+			      
 			  ],
 			// use: [
 			// 	{
@@ -124,6 +124,17 @@ module.exports = {
 			//  include: path.resolve(__dirname, './src'), //antd 时要关闭
               
 			//   exclude: path.resolve(__dirname, './node_modules'),  //antd 时要关闭a
+			},
+			{
+				// 命中 SCSS 文件
+				test: /\.less$/,
+		  
+				use: [
+					'style-loader',
+					'css-loader',
+					'postcss-loader',
+					'less-loader',
+				],
 			},
 			{
 			  // 对非文本文件采用 file-loader 加载
@@ -199,7 +210,7 @@ module.exports = {
 		historyApiFallback:true,
 		proxy: {
             '/api': {
-				target: 'http://172.16.68.149:8888',
+				target: 'http://172.16.68.150:8888',
 				pathRewrite: {
 					'^/api': '/' //这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
 						// 比如我要调用'http://0.0:300/user/add'，直接写‘/api/user/add’即可 代理后地址栏显示/

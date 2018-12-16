@@ -1,9 +1,38 @@
 import React, { Component } from 'react';
+import * as mobx from 'mobx';
+
 // import * as React from 'react';
 // import ReactDOM from 'react-dom';
 // import { Button } from '../../components/Button';
 import './index.css';
 import axios from 'axios'
+import {observable, action, autorun} from 'mobx';
+import {observer} from 'mobx-react';
+let appState = observable({
+    timer: 0
+});
+
+appState.resetTimer = action(function reset() {
+    appState.timer = 0;
+    appState.age = 0;
+
+});
+
+setTimeout(action(function tick() {
+    appState.timer += 1;
+    appState.age = 18;
+
+}), 1000);
+
+// console.log(appState)
+var obj = mobx.observable({
+    x: 1
+});
+
+var clone = mobx.toJS(obj);
+
+//console.log(obj); // true
+//console.log(clone); // false
 // import RouteMap from '../../router/router'
 //import HeaderNav from '../../components/header/header'
 // import { createBrowserHistory } from "history";
@@ -13,8 +42,12 @@ import axios from 'axios'
 // var app = document.getElementById('app')
 // app.innerHTML = 'kskskksksk'
 // console.log('home')
+@observer
 class ShouYe extends Component{
-
+    constructor(props){
+        super(props);
+        
+    }
     componentDidMount(){
         //30.27.10.55 
         //172.16.68.149
@@ -27,17 +60,28 @@ class ShouYe extends Component{
         });
 
     }
+
+    onReset() {
+        this.props.appState.resetTimer();
+    }
     render(){
 
         return(
             <div>
                 {/* <HeaderNav/> */}
                 <div>这是首页</div>
+                <button onClick={this.onReset.bind(this)}>
+                    Seconds passed: {this.props.appState.timer}
+                    Seconds passed: {this.props.appState.age}
+                </button>
             </div>
         )
 
     }
 }
+ShouYe.defaultProps={
+    appState:appState
+};
 export default ShouYe
 // ReactDOM.render(<Ddd />, document.getElementById('app'));
 

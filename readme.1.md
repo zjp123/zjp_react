@@ -42,3 +42,6 @@ analyse/)，它是一个在线 Web 应用。
  - npm install babel-plugin-import --save-dev 按需加载
  - npm install antd --save
  - 注意pages 页面里面必须包含index.js 或者index.jsx 不能叫home.js 或者别的名字
+ - npm i --save-dev babel-plugin-transform-decorators-legacy //支持装饰器
+ - npm i -D @babel/plugin-proposal-class-properties  JavaScript 的新特性 - 需要 @babel/plugin-proposal-class-properties 插件的支持。
+ - npm install mobx-react-devtools
