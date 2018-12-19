@@ -45,3 +45,4 @@ analyse/)，它是一个在线 Web 应用。
  - npm i --save-dev babel-plugin-transform-decorators-legacy //支持装饰器
  - npm i -D @babel/plugin-proposal-class-properties  JavaScript 的新特性 - 需要 @babel/plugin-proposal-class-properties 插件的支持。
  - npm install mobx-react-devtools
+ - axios 请求django 服务器时，一定要注意在post提交时  一定要转为formdata的形式

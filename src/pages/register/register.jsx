@@ -1,12 +1,13 @@
 import React,{ Component } from 'react';
 import {observable, action, computed, set} from 'mobx';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import * as mobx from 'mobx';
 import axios from 'axios'
 // import * as React from 'react';
 // import ReactDOM from 'react-dom';
 // import { Button } from '../../components/Button';
 import './register.less';
+import 'antd/dist/antd.css'
 // import BasicExample from '../../router/index'
 
 // var app = document.getElementById('app')
@@ -157,31 +158,259 @@ import './register.less';
 // TodoList.defaultProps={
 //     store:observableTodoStore 
 // };
+import UserRegister from '../../store/state'
 
-class Register extends Component{
+import {
+    Form, Icon, Input, Button, Checkbox,Layout,Modal
+  } from 'antd';
 
+const {
+  Footer,Content,
+} = Layout;
+
+require('jquery')
+
+class RedirectModal extends Component {
+    state = { visible: false }
+    //registerState
+  
+    showModal = () => {
+      this.setState({
+        visible: true,
+      });
+    }
+  
+    handleOk = (e) => {
+      console.log(e);
+      this.setState({
+        visible: false,
+      });
+    }
+  
+    handleCancel = (e) => {
+      console.log(e);
+      this.setState({
+        visible: false,
+      });
+    }
+  
+    render() {
+      return (
+        <div>
+          <Button type="primary" onClick={this.showModal}>
+            Open Modal
+          </Button>
+          <Modal
+            title="Basic Modal"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+          >
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Modal>
+        </div>
+      );
+    }
+  }
+
+
+
+const FormItem = Form.Item;
+const stores = new UserRegister()
+
+@inject('stores')
+@observer
+class NormalLoginForm extends Component {
     constructor(props){
+
         super(props)
+        
     }
-    componentDidMount(){
-        //30.27.10.55 
-        //172.16.68.149
-        axios.get('/api')
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    registerHandle(csrftoken){
+        const username = this.userName.props.value
+        const password = this.password.props.value
+        const confirmpassword = this.confirmpassword.props.value
+        let that = this
+        axios({
+            method: 'post',
+            url: '/api/register',
+            data: {
+                username:username,
+                password:password,
+                confirmpassword:confirmpassword
+            },
+            transformRequest: [function (data) {//一定要注意在post提交时  一定要转为formdata的形式
+                let ret = ''
+                for (let it in data) {
+                  ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                }
+                return ret
+            }],
+            headers: {
+                'X-CSRFToken':csrftoken,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            }
+            }).then(function (response) {
+                console.log(response);
+                const resdata = response.data;
+                if(resdata.code==200){
+                    that.props.store.registerState = true;
+                    // this.props.store.user = true;
+                    //Accept: application/json, text/javascript, */*; q=0.01
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    
+      
+        
 
     }
-    render(){
+    handleSubmit = (e) => {
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        // console.log(err)
 
-        return(
-            <div className="aa">这是关于Register的页面</div>
-        )
+        if (!err) {//没有错误的情况下
+        //   console.log('Received values of form: ', values);
+        
+
+            axios.get('/api/register')
+            .then((res)=>{
+                        // this.usrInfoSending(new Date().getTime())
+                        let csrftoken = this.getCookie('csrftoken');
+                        console.log(csrftoken)
+                        this.registerHandle(csrftoken)
+                        // $.ajax({
+                        //     type:'POST',
+                        //     url:'/api/register',
+                        //     dataType:'json',
+                        //     headers: {
+                        //         'X-CSRFToken':csrftoken,
+                        //     },
+                        //     data:{
+                        //         username:'rrr',
+                        //         password:123,
+                        //         confirmpassword:123
+                        //     },
+                        //     success:function(res){
+                        //         console.log(res)
+                        //     }
+            
+                        // })
+                        
+                    })
+            .catch((err) => {
+                        // this.networkErr(err);
+                        console.log(err)
+
+            });
+          
+            
+            // console.log(username,password,confirmpassword )
+            
+        
+            
+        }
+      });
+
     }
-}
+    
+    compareToFirstPassword = (rule, value, callback) => {
+        const form = this.props.form;
+        if (value && value !== form.getFieldValue('password')) {
+          callback('Two passwords that you enter is inconsistent!');
+        } else {
+          callback();
+        }
+      }
+    
+      validateToNextPassword = (rule, value, callback) => {
+        const form = this.props.form;
+        if (value ) {
+          form.validateFields(['confirm'], { force: true });
+        }
+        callback();
+      }
+
+    render() {
+      const { getFieldDecorator } = this.props.form;
+      const { registerState } = this.props.stores
+      return (
+        <Layout id="register-layout">
+            <Content>
+                <div className="imgwrap">
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545039718757&di=d85e9e2f1464022876c7202d13e948fc&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F9%2F5845306bc7a27.jpg"/>
+                </div>
+            </Content>
+            <Form onSubmit={this.handleSubmit} className="login-form">
+                <FormItem className="inputType">
+                    {getFieldDecorator('userName', {
+                    rules: [{ required: true, message: 'Please input your username!' }],
+                    })(
+                    <Input className="ant-input" ref={(input) => this.userName = input} id="userName" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                    )}
+                </FormItem>
+                <FormItem label="Password" className="inputType">
+                    {getFieldDecorator('password', {
+                    rules: [{ required: true, message: 'Please input your Password!' }],
+                    })(
+                    <Input className="ant-input" id="password" ref={(input) => this.password = input} prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                    )}
+                </FormItem>
+                <FormItem label="Confirm Password" className="inputType">
+                    {getFieldDecorator('confirm', {
+                        rules: [{
+                        required: true, message: 'Please confirm your password!',
+                        }, {
+                        validator: this.compareToFirstPassword,
+                        }],
+                    })(
+                        <Input className="ant-input" type="password" ref={(input) => this.confirmpassword = input} prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} id="passwordAgain" placeholder="confirm password" onBlur={this.handleConfirmBlur} />
+                    )}
+                </FormItem>
+                <FormItem>
+                    {getFieldDecorator('remember', {
+                    valuePropName: 'checked',
+                    initialValue: true,
+                    })(
+                    <Checkbox id="remember">Remember me</Checkbox>
+                    )}
+                
+                    <Button type="primary" id="register" htmlType="submit" className="ant-btn login-form-button ant-btn-primary" >
+                    注册
+                    </Button>
+                    Or <a href="">login now!</a>
+                </FormItem>
+            </Form>
+            <RedirectModal registerState={registerState}/>
+            <Footer></Footer>
+        </Layout>
+      );
+    }
+  }
+  
+const Register = Form.create()(NormalLoginForm);
 export default Register
 
 // ReactDOM.render(<Signup />, document.getElementById('app'));
