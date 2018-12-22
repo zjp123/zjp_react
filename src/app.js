@@ -3,6 +3,8 @@ import { Layout } from 'antd';
 import {Link, BrowserRouter as Router, Route } from 'react-router-dom'
 const { Header } = Layout;
 import '../src/components/header/header.less'
+import FooterWrap from '../src/components/footer/footer'
+
 import '../src/base/base.css'
 import logo from "../src/imgs/zjp.jpg"
 import Home from '../src/pages/home/home.jsx'
@@ -94,7 +96,11 @@ class App extends Component{
                                 <Route exact path="/register" component={Register}/>
 
                         </div>
+                        <div id="footerWrap">
+                            <FooterWrap/>
+                        </div>
                         <DevTools />
+                        
                     </div>
                 </Router>
             </Provider>

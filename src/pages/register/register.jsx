@@ -168,8 +168,14 @@ const {
   Footer,Content,
 } = Layout;
 
+
+const FormItem = Form.Item;
+const stores = new UserRegister()
 require('jquery')
 
+
+@inject('stores')
+@observer
 class RedirectModal extends Component {
     state = { visible: false }
     //registerState
@@ -179,46 +185,46 @@ class RedirectModal extends Component {
         visible: true,
       });
     }
-  
+
+
+    @action  
     handleOk = (e) => {
-      console.log(e);
-      this.setState({
-        visible: false,
-      });
+    //   console.log(e);
+    //   this.setState({
+    //     visible: false,
+    //   });
+        this.props.stores.userobj.registerState = false;
+        this.props.resetHandle();
+
     }
+
   
-    handleCancel = (e) => {
-      console.log(e);
-      this.setState({
-        visible: false,
-      });
+    componentWillReceiveProps(){
+        console.log(this.props)
     }
-  
     render() {
       return (
         <div>
-          <Button type="primary" onClick={this.showModal}>
-            Open Modal
-          </Button>
+          
           <Modal
-            title="Basic Modal"
-            visible={this.state.visible}
+            title="提示"
+            visible={this.props.registerState}
             onOk={this.handleOk}
-            onCancel={this.handleCancel}
+            footer={[
+                <Button key="submit" type="primary"  onClick={this.handleOk}>
+                确定
+                </Button>
+               
+            ]}
           >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            <p>注册成功！ 相遇即是缘分。</p>
+           
           </Modal>
         </div>
       );
     }
   }
 
-
-
-const FormItem = Form.Item;
-const stores = new UserRegister()
 
 @inject('stores')
 @observer
@@ -242,6 +248,14 @@ class NormalLoginForm extends Component {
             }
         }
         return cookieValue;
+    }
+
+    @action
+    setRegisterState(){
+
+        this.props.stores.userobj.registerState = true;
+
+
     }
 
     registerHandle(csrftoken){
@@ -270,10 +284,11 @@ class NormalLoginForm extends Component {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
             }).then(function (response) {
-                console.log(response);
+                console.log(response.data);
                 const resdata = response.data;
                 if(resdata.code==200){
-                    that.props.store.registerState = true;
+                    console.log(that.props.stores)
+                    that.setRegisterState()
                     // this.props.store.user = true;
                     //Accept: application/json, text/javascript, */*; q=0.01
                 }
@@ -281,9 +296,6 @@ class NormalLoginForm extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-    
-      
-        
 
     }
     handleSubmit = (e) => {
@@ -292,8 +304,6 @@ class NormalLoginForm extends Component {
         // console.log(err)
 
         if (!err) {//没有错误的情况下
-        //   console.log('Received values of form: ', values);
-        
 
             axios.get('/api/register')
             .then((res)=>{
@@ -301,23 +311,7 @@ class NormalLoginForm extends Component {
                         let csrftoken = this.getCookie('csrftoken');
                         console.log(csrftoken)
                         this.registerHandle(csrftoken)
-                        // $.ajax({
-                        //     type:'POST',
-                        //     url:'/api/register',
-                        //     dataType:'json',
-                        //     headers: {
-                        //         'X-CSRFToken':csrftoken,
-                        //     },
-                        //     data:{
-                        //         username:'rrr',
-                        //         password:123,
-                        //         confirmpassword:123
-                        //     },
-                        //     success:function(res){
-                        //         console.log(res)
-                        //     }
-            
-                        // })
+                    
                         
                     })
             .catch((err) => {
@@ -326,11 +320,7 @@ class NormalLoginForm extends Component {
 
             });
           
-            
-            // console.log(username,password,confirmpassword )
-            
-        
-            
+    
         }
       });
 
@@ -345,7 +335,7 @@ class NormalLoginForm extends Component {
         }
       }
     
-      validateToNextPassword = (rule, value, callback) => {
+    validateToNextPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value ) {
           form.validateFields(['confirm'], { force: true });
@@ -353,9 +343,21 @@ class NormalLoginForm extends Component {
         callback();
       }
 
+    resetHandle = (value) => {
+        console.log(value);
+        this.props.form.setFieldsValue({
+            password: '',
+        });
+        this.props.form.setFieldsValue({
+            confirm: '',
+        });
+      }
+
     render() {
       const { getFieldDecorator } = this.props.form;
-      const { registerState } = this.props.stores
+      const { registerState }= this.props.stores.userobj;
+      
+      console.log('000'+ registerState)
       return (
         <Layout id="register-layout">
             <Content>
@@ -403,13 +405,14 @@ class NormalLoginForm extends Component {
                     Or <a href="">login now!</a>
                 </FormItem>
             </Form>
-            <RedirectModal registerState={registerState}/>
-            <Footer></Footer>
+            <RedirectModal registerState={registerState} resetHandle={this.resetHandle}/>
+            
         </Layout>
       );
     }
   }
-  
+
+
 const Register = Form.create()(NormalLoginForm);
 export default Register
 
