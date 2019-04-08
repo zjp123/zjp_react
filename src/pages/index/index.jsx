@@ -8,6 +8,8 @@ import './index.css';
 import axios from 'axios'
 import {observable, action, autorun} from 'mobx';
 import {observer} from 'mobx-react';
+import typeDec from '../../unit/freshNavDingWei'
+
 let appState = observable({
     timer: 0
 });
@@ -42,6 +44,7 @@ var clone = mobx.toJS(obj);
 // var app = document.getElementById('app')
 // app.innerHTML = 'kskskksksk'
 // console.log('home')
+@typeDec
 @observer
 class ShouYe extends Component{
     constructor(props){

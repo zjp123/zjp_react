@@ -46,4 +46,4 @@ analyse/)，它是一个在线 Web 应用。
  - npm i -D @babel/plugin-proposal-class-properties  JavaScript 的新特性 - 需要 @babel/plugin-proposal-class-properties 插件的支持。
  - npm install mobx-react-devtools
  - axios 请求django 服务器时，一定要注意在post提交时  一定要转为formdata的形式
- - 在与虚拟机里django的项目通信时 ，启动项目时要设置 0.0.0.0：9999， 然后设置虚拟机的防火墙允许9999端口访问
+ - 在与虚拟机里django的项目通信时 ，启动项目时要设置 0.0.0.0：8888， 然后设置虚拟机的防火墙允许9999端口访问

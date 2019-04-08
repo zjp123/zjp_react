@@ -1,39 +1,21 @@
-import {observable, action, autorun, computed} from 'mobx';
-import * as mobx from 'mobx';
+import IndexStore from './indexStore'
+import AppStore from './appStore'
+import UserStore from './userStore'
+import HomeStore from './homeStore'
 
 
+const indexStore = new IndexStore()
+const appStore = new AppStore()
+const userStore = new UserStore()
+const homeStore = new HomeStore()
 
-class UserRegister {
-	@observable userobj = {
-		registerState :false,
-		user:null
-	};
-    // @observable pendingRequests = 0;
+const stores = {
+	indexStore,
+	appStore,
+	userStore,
+	homeStore
 
-    constructor() {
-        mobx.autorun(() => console.log(this.report));
-    }
-
-	// @computed get completedTodosCount() {
-    // 	return this.todos.filter(
-	// 		todo => todo.completed === true
-	// 	).length;
-    // }
-
-	// @computed get report() {
-	// 	if (this.todos.length === 0)
-	// 		return "<none>";
-	// 	return `Next todo: "${this.todos[0].task}". ` +
-	// 		`Progress: ${this.completedTodosCount}/${this.todos.length}`;
-	// }
-
-	// addTodo(task) {
-	// 	this.todos.push({
-	// 		task: task,
-	// 		completed: false,
-	// 		assignee: null
-	// 	});
-	// }
 }
 
-export default UserRegister
+
+export default stores

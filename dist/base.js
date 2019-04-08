@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{"./src/base/base.css":function(s,c,e){},"./src/base/base.js":function(s,c,e){e("./src/base/base.css"),console.log("zjp")}}]);

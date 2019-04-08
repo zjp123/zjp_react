@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 // import * as React from 'react';
-import ReactDOM from 'react-dom';
+
 import './home.css'
+import typeDec from '../../unit/freshNavDingWei'
+import {observer} from 'mobx-react';
 
 
+@typeDec
+@observer
 class Home extends Component{
 
-
+    constructor(props){
+        super(props)
+    }
     render(){
 
 

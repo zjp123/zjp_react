@@ -1,13 +1,15 @@
 import React,{ Component } from 'react';
-import {observable, action, computed, set} from 'mobx';
+import {action} from 'mobx';
 import {observer, inject} from 'mobx-react';
-import * as mobx from 'mobx';
 import axios from 'axios'
+import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 // import * as React from 'react';
 // import ReactDOM from 'react-dom';
 // import { Button } from '../../components/Button';
 import './register.less';
 import 'antd/dist/antd.css'
+import typeDec from '../../unit/freshNavDingWei'
 // import BasicExample from '../../router/index'
 
 // var app = document.getElementById('app')
@@ -158,7 +160,7 @@ import 'antd/dist/antd.css'
 // TodoList.defaultProps={
 //     store:observableTodoStore 
 // };
-import UserRegister from '../../store/state'
+// import UserStore from '../../store/userStore'
 
 import {
     Form, Icon, Input, Button, Checkbox,Layout,Modal
@@ -170,39 +172,46 @@ const {
 
 
 const FormItem = Form.Item;
-const stores = new UserRegister()
+// const stores = new UserStore()
 require('jquery')
 
 
-@inject('stores')
+@inject('userStore')
 @observer
 class RedirectModal extends Component {
-    state = { visible: false }
+    // state = { visible: false }
     //registerState
   
-    showModal = () => {
-      this.setState({
-        visible: true,
-      });
-    }
+    // showModal = () => {
+    //   this.setState({
+    //     visible: true,
+    //   });
+    // }
+   
 
-
-    @action  
+    @action.bound 
     handleOk = (e) => {
     //   console.log(e);
-    //   this.setState({
-    //     visible: false,
-    //   });
-        this.props.stores.userobj.registerState = false;
+     
+        
+        this.props.userStore.userobj.registerState = false;
         this.props.resetHandle();
 
     }
-
+    
+    @action.bound
+    loginHandle(){
+        this.props.userStore.userobj.registerState = false;
+        this.props.resetHandle();
+        
+        this.props.history.push('/login')
+    }
   
     componentWillReceiveProps(){
-        console.log(this.props)
+        // console.log(this.props)
     }
     render() {
+        console.log(this.props)
       return (
         <div>
           
@@ -211,8 +220,11 @@ class RedirectModal extends Component {
             visible={this.props.registerState}
             onOk={this.handleOk}
             footer={[
-                <Button key="submit" type="primary"  onClick={this.handleOk}>
+                <Button key="submit" type="primary" style={{marginRight:36}}  onClick={this.handleOk}>
                 确定
+                </Button>,
+                <Button key="login" type="primary"  onClick={this.loginHandle}>
+                去登录
                 </Button>
                
             ]}
@@ -225,15 +237,30 @@ class RedirectModal extends Component {
     }
   }
 
+  RedirectModal = withRouter(RedirectModal)
 
-@inject('stores')
+
+@inject('userStore')
+@typeDec
 @observer
 class NormalLoginForm extends Component {
     constructor(props){
 
         super(props)
+        // console.log(this.props)
+        // let pathname = this.props.location.pathname
+        // if(pathname.length==1){
+        //     pathname = pathname
+        // }else{
+        //     pathname = pathname.slice(1)
+
+        // }
+        // this.props.typeHandle(pathname)
+
+
         
     }
+
     getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {
@@ -253,7 +280,7 @@ class NormalLoginForm extends Component {
     @action
     setRegisterState(){
 
-        this.props.stores.userobj.registerState = true;
+        this.props.userStore.userobj.registerState = true;
 
 
     }
@@ -287,7 +314,7 @@ class NormalLoginForm extends Component {
                 console.log(response.data);
                 const resdata = response.data;
                 if(resdata.code==200){
-                    console.log(that.props.stores)
+                    console.log(that.props.userStore)
                     that.setRegisterState()
                     // this.props.store.user = true;
                     //Accept: application/json, text/javascript, */*; q=0.01
@@ -355,7 +382,7 @@ class NormalLoginForm extends Component {
 
     render() {
       const { getFieldDecorator } = this.props.form;
-      const { registerState }= this.props.stores.userobj;
+      const { registerState }= this.props.userStore.userobj;
       
       console.log('000'+ registerState)
       return (
@@ -402,7 +429,7 @@ class NormalLoginForm extends Component {
                     <Button type="primary" id="register" htmlType="submit" className="ant-btn login-form-button ant-btn-primary" >
                     注册
                     </Button>
-                    Or <a href="">login now!</a>
+                    Or <Link to="/login">login now!</Link>
                 </FormItem>
             </Form>
             <RedirectModal registerState={registerState} resetHandle={this.resetHandle}/>
