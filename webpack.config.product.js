@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const ImageminPlugin = require("imagemin-webpack-plugin").default
 // const { AutoWebPlugin } = require('web-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -17,10 +18,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // });
 
 module.exports = {
-	// mode: 'development',
+	mode: 'production',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'js/[name].js',
+		filename: 'js/[name].[hash:8].js',
 		chunkFilename : '[name].js',
 		publicPath:'/static/',//后面的斜杠也要加上
          // 生成的 Source Map 文件名称
@@ -146,13 +147,15 @@ module.exports = {
 				  loader: 'url-loader',
 				  options: {
 					// 30KB 以下的文件采用 url-loader
+					name: "[name]-[hash:8].[ext]",
 					limit: 1024 * 30,
 					// 否则采用 file-loader，默认值就是 file-loader 
 					fallback: 'file-loader',
 					 query: {
 						  
 						  name: 'imgs/[name].[ext]',
-					  }
+					  },
+					  outputPath: "imgs/"
   
 				  }
 			  }],
@@ -168,11 +171,14 @@ module.exports = {
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: 'css/[name].css',
+			filename: 'css/[name].[hash:8].css',
 		}),
 		new CleanWebpackPlugin(
             ['dist']
 		),
+		new ManifestPlugin({
+			fileName: 'asset-manifest.json',
+		}),
 		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
 		new ImageminPlugin(

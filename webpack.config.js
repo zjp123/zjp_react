@@ -20,7 +20,7 @@ module.exports = {
 	// mode: 'development',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'js/[name].js',
+		filename: 'js/[name].[hash:8].js',
 		chunkFilename : '[name].js',
 		publicPath:'',//后面的斜杠也要加上
          // 生成的 Source Map 文件名称
@@ -144,12 +144,15 @@ module.exports = {
 				  options: {
 					// 30KB 以下的文件采用 url-loader
 					limit: 1024 * 30,
+					name: "[name]-[hash:8].[ext]",
 					// 否则采用 file-loader，默认值就是 file-loader 
 					fallback: 'file-loader',
 					 query: {
 						  
 						  name: 'imgs/[name].[ext]',
-					  }
+					  },
+					  outputPath: "imgs/"
+
   
 				  }
 			  }],
@@ -165,7 +168,7 @@ module.exports = {
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: 'css/[name].css',
+			filename: 'css/[name].[hash:8].css',
 		}),
 		new CleanWebpackPlugin(
             ['dist']
@@ -207,14 +210,17 @@ module.exports = {
 		inline:true,
         // open:true,
 		hot:true,
+		overlay:{
+			errors:true //出错时浏览器会出现黑色弹窗提示
+		},
 		historyApiFallback:true,
 		proxy: {
             '/api': {
 				target: 'http://172.16.68.161:8888',
-				pathRewrite: {
-					'^/api': '/' //这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
-						// 比如我要调用'http://0.0:300/user/add'，直接写‘/api/user/add’即可 代理后地址栏显示/
-				},
+				// pathRewrite: {
+				// 	'^/api': '/' //这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
+				// 		// 比如我要调用'http://0.0:300/user/add'，直接写‘/api/user/add’即可 
+				// },
                 secure: false, // 接受 运行在 https 上的服务
                 changeOrigin: true
             }

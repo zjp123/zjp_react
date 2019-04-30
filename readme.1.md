@@ -23,6 +23,7 @@
  - npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
  - npm i -D mini-css-extract-plugin
  - npm i -D imagemin-webpack-plugin 压缩图片
+ - npm i -D  webpack-manifest-plugin  打包时生成aset-manifest.json 文件 为了服务端渲染      
  ### 注意事项
  - AutoWebPlugin 的commonsChunk 不与 splitChunks CommonsChunkPlugin 同用？
  - 一、模板页面没有注入css或者js 使用AutoWebPlugin 它的 commonsChunk(common) postEntrys(css) 没有使用CommonsChunkPlugin
@@ -47,3 +48,26 @@ analyse/)，它是一个在线 Web 应用。
  - npm install mobx-react-devtools
  - axios 请求django 服务器时，一定要注意在post提交时  一定要转为formdata的形式
  - 在与虚拟机里django的项目通信时 ，启动项目时要设置 0.0.0.0：8888， 然后设置虚拟机的防火墙允许9999端口访问
+ - babel如果出现奇怪问题  那就npm update 就OK了
+
+
+
+
+ # 加上服务端渲染
+   - ssr是在build后的事情，为了首屏加载速度更快，seo友好，除首屏外其他的页面还是原来开发的代码
+     为什么是build后的，node端是没有例如react事件集成环境或者别的环境所以需要打包编译好的文件
+   - npm install babel-cli --save 使node环境支撑ecs
+   - npm install body-parser --save express要用的
+   - npm install cookie-parser --save express要用的
+   - npm install babel-cli -S bael-node
+   - npm install --save-dev @babel/core @babel/cli @babel/node babel升级后
+   - npm install -D nodemon 开发时可以直接保存 就更新了  不用手动重启
+   - npm install css-modules-require-hook --save  使node环境支持css
+   - npm install asset-require-hook --save   支持图片
+   - node babel环境中 不支持less编译  在babelrc中 设置style false
+   - cross-env 是解决操作系统环境的问题 使用是 cross-env NODE_ENV=production   代码中const isDev = process.env.NODE_ENV === 'development'
+   - hot-module-replacement react的热替换 同时还需要在babelrc的文件里加上配置 代码里要做判断 module.hot  还有其他配置 react-hot-loader的配置很多 wepack对应也要配置
+   -  npm i memory-fs -D  用于内存读取文件
+   - npm i http-proxy-middleware -D 服务端渲染时 需要用它去代理请求 才能拿到内存里面的东西
+   - npm install @babel/core @babel/register --save-dev 是为了在服务端打包时  不处理less css等文件
+   - npm install isomorphic-style-loader --save-dev 是服务端编译less css文件时  报window is undefind

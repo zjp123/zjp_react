@@ -1,8 +1,8 @@
 import React, { Component } from  'react'
 import { Layout } from 'antd';
-import {Link, BrowserRouter as Router, Route } from 'react-router-dom'
+import {Link, Route } from 'react-router-dom'
 const { Header } = Layout;
-import '../src/components/header/header.less'
+// import '../src/components/header/header.less'
 import FooterWrap from '../src/components/footer/footer'
 
 import '../src/base/base.css'
@@ -12,9 +12,9 @@ import ShouYe from '../src/pages/index/index.jsx'
 import Register from '../src/pages/register/register.jsx'
 import Login from '../src/pages/login/login.jsx'
 
-import DevTools from 'mobx-react-devtools'
-import {Provider} from 'mobx-react';
-import stores from '../src/store/state'
+// import DevTools from 'mobx-react-devtools'
+// import {Provider} from 'mobx-react';
+// import stores from '../src/store/state'
 require('jquery')
 // const sotres = new UserStore()
 // import BasicExample from '../../router/router'
@@ -103,8 +103,7 @@ class App extends Component{
         // activestate=(activestate=='home'?'visted':'')
         console.log(activestate)
         return(
-            <Provider {...stores}>
-                <Router>
+            
                     <div>
                         <Layout className="zjp-project">
                                     <div>
@@ -144,11 +143,9 @@ class App extends Component{
                         <div id="footerWrap">
                             <FooterWrap/>
                         </div>
-                        <DevTools />
                         
                     </div>
-                </Router>
-            </Provider>
+            
         )
     }
     
