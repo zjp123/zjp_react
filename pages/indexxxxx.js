@@ -1,12 +1,13 @@
 import React, { Component } from  'react'
 import { Layout } from 'antd';
-import {Link, Route } from 'react-router-dom'
+import Link from 'next/link'
+import Router, { withRouter }  from 'next/router'
 const { Header } = Layout;
 // import '../src/components/header/header.less'
 import FooterWrap from '../src/components/footer/footer'
 
 import '../src/base/base.css'
-import logo from "../static/zjp.jpg"
+// import logo from ""
 import Home from '../src/pages/home/home.jsx'
 import ShouYe from '../src/pages/index/index.jsx'
 import Register from '../src/pages/register/register.jsx'
@@ -97,24 +98,24 @@ class App extends Component{
     render(){
         let activestate = this.state.isActive
         // console.log(activestate)
-        
+        this.call
         // activestate=(activestate=='login'?'visted':'')
         // activestate=(activestate=='reg'?'visted':'')
         // activestate=(activestate=='home'?'visted':'')
-        console.log(activestate)
+        
         return(
             
-                    <div>
+            <Container>
                         <Layout className="zjp-project">
                                     <div>
                                         <Header id="header">
-                                            <div id="logo" className="fl"><img className="logoimg" src={logo} alt="logo"/></div>
+                                            <div id="logo" className="fl"><img className="logoimg" src="../static/zjp.jpg" alt="logo"/></div>
                                                 <div>
                                                     <ul id="router-list" className="fr"  onClick={this.handleClick}>
-                                                        <li className={activestate=="index"?"visted":''} data-type='index'><Link to="/">首页</Link></li>
-                                                        <li className={activestate=="home"?"visted":''} data-type='home'><Link to="/home">家</Link></li>
-                                                        <li className={activestate=="login"?"visted":''} data-type='login'><Link to="/login">登录</Link></li>
-                                                        <li className={activestate=="reg"?"visted":''} data-type='reg'><Link to="/register">注册</Link></li>
+                                                        <li className={activestate=="index"?"visted":''} data-type='index'><Link href="/">首页</Link></li>
+                                                        <li className={activestate=="home"?"visted":''} data-type='home'><Link href="/home">家</Link></li>
+                                                        <li className={activestate=="login"?"visted":''} data-type='login'><Link href="/login">登录</Link></li>
+                                                        <li className={activestate=="reg"?"visted":''} data-type='reg'><Link href="/register">注册</Link></li>
                                                         <li className="slider"></li>
                                                     </ul>
 
@@ -126,25 +127,15 @@ class App extends Component{
 
                         </Layout>
                         <div id="content">
-                                <Route exact path="/home" render={(props)=>(
-                                    <Home  {...props} typeHandle={this.callbackHancle}/>
-                                )} />
-                                <Route exact path="/" render={(props)=>(
-                                    <ShouYe  {...props} typeHandle={this.callbackHancle}/>
-                                )}  />
-                                <Route exact path="/login" render={(props)=>(
-                                    <Login  {...props} typeHandle={this.callbackHancle}/>
-                                )}  />
-                                <Route exact path="/register" render={(props)=>(
-                                    <Register  {...props} typeHandle={this.callbackHancle}/>
-                                )}  />
-
+                            
+                            <ShouYe typeHandle={this.callbackHancle}/>
+                           
                         </div>
                         <div id="footerWrap">
                             <FooterWrap/>
                         </div>
                         
-                    </div>
+            </Container>
             
         )
     }

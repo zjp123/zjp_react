@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import * as React from 'react';
 
-import './home.css'
+import './home.less'
 import typeDec from '../../unit/freshNavDingWei'
 import {observer} from 'mobx-react';
 

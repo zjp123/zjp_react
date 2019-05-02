@@ -1,16 +1,16 @@
 import React, { Component } from  'react'
 import { Layout } from 'antd';
-import {Link, Route } from 'react-router-dom'
+import Link from 'next/link'
+import Router, { withRouter }  from 'next/router'
 const { Header } = Layout;
-// import '../src/components/header/header.less'
-import FooterWrap from '../src/components/footer/footer'
+import '../../src/components/header/header.less'
 
-import '../src/base/base.css'
-import logo from "../static/zjp.jpg"
-import Home from '../src/pages/home/home.jsx'
-import ShouYe from '../src/pages/index/index.jsx'
-import Register from '../src/pages/register/register.jsx'
-import Login from '../src/pages/login/login.jsx'
+import '../../src/base/base.css'
+// import logo from ""
+// import Home from '../src/pages/home/home.jsx'
+// import ShouYe from '../src/pages/index/index.jsx'
+// import Register from '../src/pages/register/register.jsx'
+// import Login from '../src/pages/login/login.jsx'
 
 // import DevTools from 'mobx-react-devtools'
 // import {Provider} from 'mobx-react';
@@ -20,14 +20,14 @@ require('jquery')
 // import BasicExample from '../../router/router'
 
 
-class App extends Component{
+class Head extends Component{
 
     constructor(props){
         super(props)
         this.sliderHandle = this.sliderHandle.bind(this)
         this.sliderLeave = this.sliderLeave.bind(this)
         this.handleClick = this.handleClick.bind(this)
-        this.callbackHancle = this.callbackHancle.bind(this)
+        // this.callbackHancle = this.callbackHancle.bind(this)
         this.state = {
             isActive:'index'
         }
@@ -39,15 +39,15 @@ class App extends Component{
         // console.log(navDom)
 
     }
-    callbackHancle(type){
-        if(type==="register"){type='reg'}
-        if(type==="/"){type='index'}
-        if(type==="login"){type='login'}
-        if(type==="home"){type='home'}
-        this.setState({
-            isActive:type
-        })
-    }
+    // callbackHancle(type){
+    //     if(type==="register"){type='reg'}
+    //     if(type==="/"){type='index'}
+    //     if(type==="login"){type='login'}
+    //     if(type==="home"){type='home'}
+    //     this.setState({
+    //         isActive:type
+    //     })
+    // }
     handleClick(e){
         // let sliderDom = $('.slider')
 
@@ -97,24 +97,34 @@ class App extends Component{
     render(){
         let activestate = this.state.isActive
         // console.log(activestate)
-        
+        this.call
         // activestate=(activestate=='login'?'visted':'')
         // activestate=(activestate=='reg'?'visted':'')
         // activestate=(activestate=='home'?'visted':'')
-        console.log(activestate)
+        
         return(
             
                     <div>
                         <Layout className="zjp-project">
                                     <div>
                                         <Header id="header">
-                                            <div id="logo" className="fl"><img className="logoimg" src={logo} alt="logo"/></div>
+                                            <div id="logo" className="fl"><img className="logoimg" src="../../static/zjp.jpg" alt="logo"/></div>
                                                 <div>
-                                                    <ul id="router-list" className="fr"  onClick={this.handleClick}>
-                                                        <li className={activestate=="index"?"visted":''} data-type='index'><Link to="/">首页</Link></li>
-                                                        <li className={activestate=="home"?"visted":''} data-type='home'><Link to="/home">家</Link></li>
-                                                        <li className={activestate=="login"?"visted":''} data-type='login'><Link to="/login">登录</Link></li>
-                                                        <li className={activestate=="reg"?"visted":''} data-type='reg'><Link to="/register">注册</Link></li>
+                                                    <ul id="router-list" className="fr"  >
+                                                        <li onClick={() =>
+                                                                                Router.push({
+                                                                                    pathname: '/',
+                                                                                    query: { name: 'Zeit' }
+                                                                                })} 
+                                                            className={activestate=="index"?"visted":''} data-type='index'><Link href="/"><a>首页</a></Link></li>
+                                                        <li onClick={() =>
+                                                                                Router.push({
+                                                                                    pathname: '/home',
+                                                                                    query: { name: 'Zeit' }
+                                                                                })} 
+                                                            className={activestate=="home"?"visted":''} data-type='home'><Link href="/home"><a>家</a></Link></li>
+                                                        <li className={activestate=="login"?"visted":''} data-type='login'><Link href="/login"><a>登录</a></Link></li>
+                                                        <li className={activestate=="reg"?"visted":''} data-type='reg'><Link href="/register"><a>注册</a></Link></li>
                                                         <li className="slider"></li>
                                                     </ul>
 
@@ -125,30 +135,13 @@ class App extends Component{
                                     </div>
 
                         </Layout>
-                        <div id="content">
-                                <Route exact path="/home" render={(props)=>(
-                                    <Home  {...props} typeHandle={this.callbackHancle}/>
-                                )} />
-                                <Route exact path="/" render={(props)=>(
-                                    <ShouYe  {...props} typeHandle={this.callbackHancle}/>
-                                )}  />
-                                <Route exact path="/login" render={(props)=>(
-                                    <Login  {...props} typeHandle={this.callbackHancle}/>
-                                )}  />
-                                <Route exact path="/register" render={(props)=>(
-                                    <Register  {...props} typeHandle={this.callbackHancle}/>
-                                )}  />
-
-                        </div>
-                        <div id="footerWrap">
-                            <FooterWrap/>
-                        </div>
-                        
                     </div>
+                    
+                   
             
         )
     }
     
 }
 
-export default App
+export default Head
