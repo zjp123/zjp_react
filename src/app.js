@@ -1,16 +1,18 @@
 import React, { Component } from  'react'
 import { Layout } from 'antd';
-import {Link, Route } from 'react-router-dom'
-const { Header } = Layout;
+import { Route } from 'react-router-dom'
+// const { Header } = Layout;
 // import '../src/components/header/header.less'
 import FooterWrap from '../src/components/footer/footer'
+import HeaderWrap from '../src/components/header/header'
 
 import '../src/base/base.css'
-import logo from "../static/zjp.jpg"
 import Home from '../src/pages/home/home.jsx'
 import ShouYe from '../src/pages/index/index.jsx'
 import Register from '../src/pages/register/register.jsx'
 import Login from '../src/pages/login/login.jsx'
+import Totop from './components/special/scrolltop/scrolltop'
+
 
 // import DevTools from 'mobx-react-devtools'
 // import {Provider} from 'mobx-react';
@@ -106,23 +108,7 @@ class App extends Component{
             
                     <div>
                         <Layout className="zjp-project">
-                                    <div>
-                                        <Header id="header">
-                                            <div id="logo" className="fl"><img className="logoimg" src={logo} alt="logo"/></div>
-                                                <div>
-                                                    <ul id="router-list" className="fr"  onClick={this.handleClick}>
-                                                        <li className={activestate=="index"?"visted":''} data-type='index'><Link to="/">首页</Link></li>
-                                                        <li className={activestate=="home"?"visted":''} data-type='home'><Link to="/home">家</Link></li>
-                                                        <li className={activestate=="login"?"visted":''} data-type='login'><Link to="/login">登录</Link></li>
-                                                        <li className={activestate=="reg"?"visted":''} data-type='reg'><Link to="/register">注册</Link></li>
-                                                        <li className="slider"></li>
-                                                    </ul>
-
-                                                </div>
-                                            {/* <BasicExample/> */}
-                                            
-                                        </Header>
-                                    </div>
+                                    <HeaderWrap  activestate={activestate} />
 
                         </Layout>
                         <div id="content">
@@ -133,7 +119,7 @@ class App extends Component{
                                     <ShouYe  {...props} typeHandle={this.callbackHancle}/>
                                 )}  />
                                 <Route exact path="/login" render={(props)=>(
-                                    <Login  {...props} typeHandle={this.callbackHancle}/>
+                                    <Login  {...props} activestate={activestate} typeHandle={this.callbackHancle}/>
                                 )}  />
                                 <Route exact path="/register" render={(props)=>(
                                     <Register  {...props} typeHandle={this.callbackHancle}/>
@@ -143,7 +129,7 @@ class App extends Component{
                         <div id="footerWrap">
                             <FooterWrap/>
                         </div>
-                        
+                        <Totop />
                     </div>
             
         )

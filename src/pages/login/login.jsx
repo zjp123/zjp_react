@@ -24,6 +24,7 @@ const FormItem = Form.Item;
 // var app = document.getElementById('app')
 // app.innerHTML = 'login'
 // console.log('home')
+// @inject('userStore')
 @inject('userStore')
 @observer
 class RedirectModal extends Component {
@@ -35,43 +36,59 @@ class RedirectModal extends Component {
     //     visible: true,
     //   });
     // }
-   
+    // constructor(props, context) {
+    //     super(props, context)
+    //     this.state ={
+    //         vsible:false
+    //     }
+        
+    // }
+    
+    
 
-    @action.bound 
+    // @action.bound 
     handleOk = (e) => {
     //   console.log(e);
      
         
-        this.props.userStore.userobj.loginState = false;
+        // this.props.userStore.userobj.loginState = false;
+        this.props.setloginModal()
         this.props.resetHandle();
 
     }
     
-    @action.bound
-    loginHandle(){
-        this.props.userStore.userobj.loginState = false;
+    // @action.bound
+    loginHandlefn(){
+        // this.props.userStore.userobj.loginState = false;
+        this.props.setloginModal()
+
+        
         this.props.resetHandle();
         
         this.props.history.push('/')
     }
   
     componentWillReceiveProps(){
+        // console.log(666666666)
         // console.log(this.props)
+      
     }
     render() {
         console.log(this.props)
+        
+        
       return (
         <div>
           
           <Modal
             title="提示"
-            visible={this.props.loginState}
+            visible={this.props.loginModal}
             onOk={this.handleOk}
             footer={[
                 <Button key="submit" type="primary" style={{marginRight:36}}  onClick={this.handleOk}>
                 确定
                 </Button>,
-                <Button key="login" type="primary"  onClick={this.loginHandle}>
+                <Button key="login" type="primary"  onClick={this.loginHandlefn.bind(this)}>
                 去首页
                 </Button>
                
@@ -95,6 +112,28 @@ class LoginCom extends Component{
 
     constructor(props){
         super(props)
+        this.state = {
+            loginModal:false
+        }
+        console.log(this.props.activestate, 'userStore')
+
+    }
+    componentWillMount(){
+        // 如果已登录不让访问登录页面
+        const username = this.getCookie('username')
+        let redireactpathname = this.props.activestate
+        // console.log(pathname, 'location')
+        if(this.props.activestate=='index'){
+            redireactpathname= ''
+        }
+        if(username!==null){
+            this.props.history.push('/' + redireactpathname)
+        }
+    }
+    setloginModal(){
+        this.setState({
+            loginModal : false
+        })
     }
     getCookie(name) {
         var cookieValue = null;
@@ -112,11 +151,14 @@ class LoginCom extends Component{
         return cookieValue;
     }
 
-    @action
+    @action.bound
     setLoginState(){
-
+        console.log('0000000')
         this.props.userStore.userobj.loginState = true;
+        const username = this.getCookie('username')
+        this.props.userStore.userobj.user = username ;
         this.props.userStore.userobj.redireactUrl = '';
+        
 
 
     }
@@ -144,12 +186,16 @@ class LoginCom extends Component{
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
-            }).then(function (response) {
-                console.log(response.data);
-                const resdata = response.data;
-                if(resdata.code==200){
-                    console.log(that.props.userStore)
+            }).then((response)=> {
+                console.log(response);
+                // const resdata = response.data;
+                if(response.status==200){
+                    // console.log(that.props.userStore)
                     that.setLoginState()
+
+                    this.setState({
+                        loginModal : true
+                    })
                     // this.props.store.user = true;
                     //Accept: application/json, text/javascript, */*; q=0.01
                 }
@@ -173,7 +219,7 @@ class LoginCom extends Component{
                         if(res.data['code']==200){
                             this.props.userStore.userobj.redireactUrl = res.data.pathname;
                             this.props.history.push(res.data.pathname)
-                            console.log('zjpzjp')
+                            // console.log('zjpzjp')
                         }else{
                             let csrftoken = this.getCookie('csrftoken');
                             // console.log(csrftoken)
@@ -205,7 +251,7 @@ class LoginCom extends Component{
       }
 
     resetHandle = (value) => {
-        console.log(value);
+        console.log(value , 'vvvvvv');
         this.props.form.setFieldsValue({
             password: '',
         });
@@ -217,7 +263,8 @@ class LoginCom extends Component{
             this.props.history.push(pathname)
         }
         const { getFieldDecorator } = this.props.form;
-        const { loginState }= this.props.userStore.userobj;
+        // const { loginState }= this.props.userStore.userobj;
+        const { loginModal } = this.state
         return(
             <Layout id="login-layout">
                 <Content>
@@ -248,7 +295,7 @@ class LoginCom extends Component{
                     </FormItem>
                         
                 </Form>
-                <RedirectModal loginState={loginState} resetHandle={this.resetHandle}/>
+                <RedirectModal  loginModal={loginModal} setloginModal={this.setloginModal.bind(this)} resetHandle={this.resetHandle}/>
                 
             </Layout>
         )
@@ -257,6 +304,14 @@ class LoginCom extends Component{
 
 const Login = Form.create()(LoginCom);
 export default Login
+
+
+
+
+
+
+// const Login = Form.create()(LoginCom);
+// export default Login
 
 // ReactDOM.render(<Login />, document.getElementById('app'));
 

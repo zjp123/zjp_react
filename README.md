@@ -62,3 +62,7 @@ module.exports = {
 	],
 };
 ```
+# npm run hot 
+# npm run build
+# 打开虚拟机 替换 webapckconfig中的代理ip ['*']
+# python3 manage.py runserver 0.0.0.0:8888

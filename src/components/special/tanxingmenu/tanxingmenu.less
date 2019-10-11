@@ -1,0 +1,47 @@
+#tanxingwrap{
+    
+    width: 100%;
+    height:390px;
+    border: 1px solid #ddd;
+    margin-top:20px;
+    .menulist{
+        box-sizing: content-box;
+        position: relative;
+        &>li{
+            float: left;
+            width:120px;
+            height:30px;
+            line-height: 30px;
+            margin-right:10px;
+            border:1px solid red;
+            text-align: center;
+            
+        }
+        #mark{
+            position: absolute;
+            top:0;
+            left: 0;
+            height:100%;
+            background: red;
+            margin: 0;
+            // width:390px;
+            height:30px;
+            overflow: hidden;
+            &>ul{
+                width:390px;
+                position: absolute;
+                top:0;
+                left: 0;
+
+                li{
+                    width:120px;
+                    height:30px;
+                    margin-right:10px;
+                    float:left;
+                    background: red;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

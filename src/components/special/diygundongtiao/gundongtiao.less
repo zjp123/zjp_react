@@ -1,0 +1,34 @@
+.gundongtiaowrap{
+    float: right;
+    .g_left{
+        display: inline-block;
+        width: 20px;
+        height:200px;
+        background: black;
+        position: relative;
+        vertical-align: top;
+        .drag_block{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: greenyellow;
+            left:0;
+            top:0;
+        }
+    }
+    .g_right{
+        width: 300px;
+        display: inline-block;
+        border: 1px solid red;
+        vertical-align: top;
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+        .g_right_content{
+            position: absolute;
+            top:0;
+            // height: 200px;
+        }
+
+    }
+}

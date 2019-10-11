@@ -1,0 +1,22 @@
+.qingchu{
+    float:right;
+    width: 500px;
+    height:500px;
+    background-image: url('../../../imgs/zjp.jpg');
+    background-size: contain;
+    position: relative;
+    box-sizing: content-box;
+    div{
+        width: 10%;
+        height:10%;
+        background-color: aqua;
+        position: absolute;
+        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2);
+        &.overactive{
+            transition: .5s;
+            transform: scale(0);
+            opacity: 0;
+        }
+       
+    }
+}

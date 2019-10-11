@@ -13,7 +13,7 @@ class UserStore {
     // @observable pendingRequests = 0;
 
     constructor() {
-        mobx.autorun(() => console.log(this.report));
+        mobx.autorun(() => console.log(this.report), 'aaaa');
     }
 
 	// @computed get completedTodosCount() {

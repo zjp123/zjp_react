@@ -31,9 +31,9 @@ function typeDec(target){
     return class dd extends target{
           constructor(props){
               super(props)
-              console.log('aa', super.props)
-              console.log('bb', target.typeHandle)
-              let pathname = super.props.router.pathname
+            //   console.log('aa', super.props)
+            //   console.log('bb', target.typeHandle)
+              let pathname = super.props.location.pathname
             //   console.log('pathnamebb:', pathname)
               if(pathname.length==1){
                   pathname = pathname
