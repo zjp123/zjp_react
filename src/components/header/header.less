@@ -92,6 +92,25 @@
             background-image: url('../../imgs/touxiang.png');
             right:40px;
             top:3px;
+            &:before { 
+                content: ""; 
+                position: absolute; 
+                width:10px; 
+                height: 90%; 
+                top: 0; 
+                left: -10px; 
+                overflow: hidden;
+                opacity:  0;
+                background: linear-gradient(to left, rgba(255,255,255,10)0, 
+                rgba(255,255,255,.2)50%, rgba(255,255,255,0)100%);   
+                // background:linear-gradient(180deg, red ,green);
+                transform: skewX(-30deg);
+                
+            
+            }
+                
+            &:hover:before { opacity:1;left: 150%; transition: left 1s ease 0s; }
+               
         }
     
     }

@@ -130,17 +130,30 @@ function moreAttrMove(obj,attrobj){
 
 
 //有时运动之前元素属性需要初始化
-function huancong(obj,attr,target) {
+function huancong(obj,attr,target,fn) {
     
+    // var kaiguan = true
     clearInterval(obj.timer)
-    speed = speed>0?Math.ceil((target-obj.offsetLeft)/8):Math.floor((target-obj.offsetLeft)/8)
+    // if(obj.timer!=null){
+    //     return ;
+    // }
+    let speed = speed>0?Math.ceil((target-obj.offsetLeft)/8):Math.floor((target-obj.offsetLeft)/8)
     obj.timer = setInterval(() => {
+        // console.log(target)
         let icur = parseInt(css(obj,attr))
         if(icur==target){
+            // kaiguan = false
             clearInterval(obj.timer)
+            obj.timer = null
+            if(fn){
+                fn.call(this)
+            }
+            return ;
 
         }
         obj.style[attr] = icur + speed + 'px'
-    }, 30)
+    }, 50)
     
 }
+
+export {huancong}

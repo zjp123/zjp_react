@@ -4,7 +4,11 @@ import React, { Component } from 'react';
 import './home.less'
 import typeDec from '../../unit/freshNavDingWei'
 import {observer} from 'mobx-react';
-
+import Xiangce from '../../components/special/xiangce/xiangce'
+import Upload from '../../components/special/uploadajax/upload'
+import Fantu from '../../components/special/sanDfantu/fantu'
+import Lunbotu from '../../components/special/lunbotu/lubotu'
+import WufengLunbo from '../../components/special/wufenglunbo/wufenglun'
 
 @typeDec
 @observer
@@ -19,7 +23,11 @@ class Home extends Component{
         return(
 
             <div id="home">
-                这是家的页面
+                <Xiangce />
+                <Upload />
+                <Fantu />
+                {/* <Lunbotu/> */}
+                <WufengLunbo />
             </div>
         )
     }

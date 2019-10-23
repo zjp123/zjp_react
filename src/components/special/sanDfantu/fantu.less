@@ -1,0 +1,70 @@
+.fanbox{
+    width: 90%;
+    margin:50px auto;
+    border: 1px solid red;
+    position: relative;
+    height: 500px;
+    position: relative;
+    #fan_btn1{
+        position: absolute;
+        top:50%;
+        transform: translateY(-50%);
+        left:50px;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        border-radius: 50%;
+    }
+    #fan_btn2{
+        position: absolute;
+        top:50%;
+        transform: translateY(-50%);
+        right:50px;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        border-radius: 50%;
+
+    }
+    .fanlist{
+        position: absolute;
+        width: 450px;
+        height:300px;
+        box-sizing: content-box;
+        // margin:0 auto;
+        top:50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        box-sizing: content-box;
+        perspective: 500px;
+        transform-style: preserve-3d;
+        // &:nth-child(1){
+        //     z-index: 100;
+        // }
+        // &:nth-child(2){
+        //     z-index: 200;
+        // }
+        &:nth-of-type(1){
+            &>li{
+                background:url('../../../imgs/timg.jpeg') no-repeat;
+            }
+        }
+        &:nth-of-type(2){
+            &>li{
+                background:url('../../../imgs/time2.jpg') no-repeat;
+            }
+        }
+        li{
+            box-sizing: content-box;
+            transition: 0.8s border,0.5s background,0.3s 0.1s transform,0.4s opacity;
+            width: 73px;
+            float: left;
+            height: 58px;
+            border: 1px solid rgba(0,0,0,0);
+            background-origin: border-box;
+            
+        }
+    }
+}
