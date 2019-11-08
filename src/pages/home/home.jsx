@@ -9,6 +9,8 @@ import Upload from '../../components/special/uploadajax/upload'
 import Fantu from '../../components/special/sanDfantu/fantu'
 import Lunbotu from '../../components/special/lunbotu/lubotu'
 import WufengLunbo from '../../components/special/wufenglunbo/wufenglun'
+import Tiaowen from '../../components/special/jiazaijindutiao/tiaowen'
+import SanxingDaohang from '../../components/special/sanxingdaohang/sanxing'
 
 @typeDec
 @observer
@@ -28,6 +30,8 @@ class Home extends Component{
                 <Fantu />
                 {/* <Lunbotu/> */}
                 <WufengLunbo />
+                <Tiaowen/>
+                <SanxingDaohang />
             </div>
         )
     }

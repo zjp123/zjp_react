@@ -28,6 +28,7 @@ export default class WufengLunbo extends Component {
   componentDidMount() {
       let lunbolist = ReactDOM.findDOMNode(this.refs.wufenlunbolist)
       this.box = lunbolist
+    //   console.log(lunbolist.childNodes)
       this.iwidth = lunbolist.childNodes[0].offsetWidth
       let tag = ReactDOM.findDOMNode(this.refs.tag).childNodes
       for (let i = 0; i < tag.length; i++) {
@@ -42,6 +43,17 @@ export default class WufengLunbo extends Component {
   }
   startMove(){
     let that = this
+    if(that.inow2==that.box.childNodes.length){
+        // clearInterval(that.timer)
+        that.inow2= 0
+        // that.timer=null
+        that.box.childNodes[0].style.left = '0px'
+        that.box.style.left = '0px'
+        // that.timer = setInterval(()=>{
+        //         that.startMove.call(that)
+                
+        //     }, 2000)
+    }
     this.inow2++
     // this.inow++
     if(this.state.inow>=that.box.childNodes.length-1){
@@ -84,7 +96,9 @@ export default class WufengLunbo extends Component {
      
     // })
     startMove(this.box,{left:-this.inow2*this.iwidth},1000,'Cubic','easeOut',function () {
+
         
+
         if(that.inow2>=that.box.childNodes.length-1){
             // console.log(111,that)
             
@@ -92,7 +106,7 @@ export default class WufengLunbo extends Component {
             // that.inow2= -1
             // clearInterval(that.timer)
             // that.timer=null
-
+            // that.inow2=that.box.childNodes.length
 
 
 
@@ -116,6 +130,11 @@ export default class WufengLunbo extends Component {
                     
             //     }, 2000)
         }
+        clearInterval(that.timer)
+
+        that.timer = setInterval(()=>{
+            that.startMove.call(that)
+        }, 2000)
      
     })
     
