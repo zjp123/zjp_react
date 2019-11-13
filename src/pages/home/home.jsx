@@ -11,6 +11,9 @@ import Lunbotu from '../../components/special/lunbotu/lubotu'
 import WufengLunbo from '../../components/special/wufenglunbo/wufenglun'
 import Tiaowen from '../../components/special/jiazaijindutiao/tiaowen'
 import SanxingDaohang from '../../components/special/sanxingdaohang/sanxing'
+import Waishijiao from '../../components/special/3d/3dwaishijiao'
+import Neishijiao from '../../components/special/3d/neishijiao'
+import Yuanzhu from '../../components/special/3d/Yuanzhu'
 
 @typeDec
 @observer
@@ -32,6 +35,9 @@ class Home extends Component{
                 <WufengLunbo />
                 <Tiaowen/>
                 <SanxingDaohang />
+                <Waishijiao/>
+                <Neishijiao/>
+                <Yuanzhu/>
             </div>
         )
     }
