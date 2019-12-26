@@ -151,7 +151,7 @@ function drag(obj) {
         document.onmouseup=function (e) {
             var e = e || e.event
 
-            if(obj.releaseCapture){
+            if(obj.releaseCapture){//释放鼠标
                 obj.releaseCapture()
             }
             document.onmousemove = document.onmouseup = null
